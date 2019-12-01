@@ -4,6 +4,8 @@ import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 import akka.actor.typed.javadsl.*;
 
+import java.math.BigInteger;
+
 public class  MultiplyerActor extends AbstractBehavior<MultiplyerActor.Multiply> {
 
     public MultiplyerActor(ActorContext<Multiply> context) {
@@ -16,17 +18,17 @@ public class  MultiplyerActor extends AbstractBehavior<MultiplyerActor.Multiply>
     }
 
     private Behavior<Multiply> multiply (Multiply multiply) {
-        multiply.replyTo.tell(new AccumilatorActor.Accumilator(multiply.i * multiply.j));
+        multiply.replyTo.tell(new AccumilatorActor.Accumilator(BigInteger.valueOf(multiply.i).multiply(BigInteger.valueOf(multiply.j) )));
         return Behaviors.same();
     }
 
     public static class Multiply {
-        public final Integer i;
-        public final Integer j;
+        public final long i;
+        public final long j;
         public final ActorRef<AccumilatorActor.Accumilator> replyTo;
-        public Multiply(Integer i, Integer j, ActorRef<AccumilatorActor.Accumilator> replyTo) {
-            this.i = i;
-            this.j = j;
+        public Multiply(int i, int j, ActorRef<AccumilatorActor.Accumilator> replyTo) {
+            this.i = Long.valueOf(i);
+            this.j = Long.valueOf(j);
             this.replyTo = replyTo;
         }
     }

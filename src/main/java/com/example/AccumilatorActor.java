@@ -6,9 +6,11 @@ import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 
+import java.math.BigInteger;
+
 public class AccumilatorActor extends AbstractBehavior<AccumilatorActor.Accumilator> {
 
-    private Integer finalResult = 1;
+    private BigInteger finalResult = BigInteger.ONE;
     public AccumilatorActor(ActorContext<Accumilator> context) {
         super(context);
     }
@@ -25,7 +27,7 @@ public class AccumilatorActor extends AbstractBehavior<AccumilatorActor.Accumila
     }
 
     private Behavior<Accumilator> accumilate (Accumilator accumilator) {
-        finalResult =  finalResult * accumilator.result;
+        finalResult =  finalResult.multiply(accumilator.result);
         System.out.println(finalResult);
 
         return Behaviors.same();
@@ -33,8 +35,8 @@ public class AccumilatorActor extends AbstractBehavior<AccumilatorActor.Accumila
 
     interface AccumilatorCommand{};
     public static class Accumilator implements  AccumilatorCommand {
-        public final Integer result;
-        public Accumilator (Integer result) {
+        public final BigInteger result;
+        public Accumilator (BigInteger result) {
             this.result = result;
         }
     }

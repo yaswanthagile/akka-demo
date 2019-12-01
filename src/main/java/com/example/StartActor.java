@@ -31,7 +31,7 @@ public class StartActor extends AbstractBehavior<StartActor.Start> {
 
     public Behavior<Start> onStart (InitCommand initCommand) {
 
-        ActorRef<AccumilatorActor.Accumilator> accumilatorActorRef = getContext().spawn(AccumilatorActor.create(), "Result-Acumilator");
+        ActorRef<AccumilatorActor.Accumilator> accumilatorActorRef = getContext().spawnAnonymous(AccumilatorActor.create());
         for(int i = initCommand.factorialOf ; i >= 2; i = i-2) {
             router.tell(new MultiplyerActor.Multiply(i, i-1, accumilatorActorRef));
         }
@@ -40,8 +40,8 @@ public class StartActor extends AbstractBehavior<StartActor.Start> {
     }
 
     public static class InitCommand implements Start {
-        public final Integer factorialOf;
-        public InitCommand(Integer factorialOf) {
+        public final int factorialOf;
+        public InitCommand(int factorialOf) {
             this.factorialOf = factorialOf;
         }
     };
