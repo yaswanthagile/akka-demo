@@ -3,11 +3,9 @@ package com.example;
 import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 import akka.actor.typed.javadsl.*;
+import akka.cluster.typed.Cluster;
+import akka.cluster.typed.ClusterStateSubscription;
 
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CompletionStage;
 
 public class StartActor extends AbstractBehavior<StartActor.Start> {
     interface Start {};
@@ -16,7 +14,6 @@ public class StartActor extends AbstractBehavior<StartActor.Start> {
 
     public StartActor(ActorContext<Start> context) {
         super(context);
-
         PoolRouter<MultiplyerActor.Multiply> poolRouter = Routers.pool(50, Behaviors.setup(MultiplyerActor::new)).withRoundRobinRouting();
         router = getContext().spawn(poolRouter, "multiplier-pool");
     }
